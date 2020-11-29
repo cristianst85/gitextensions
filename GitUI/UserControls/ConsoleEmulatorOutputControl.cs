@@ -145,6 +145,8 @@ namespace GitUI.UserControls
 
         private string FilterOutConsoleCommandLine(string outputChunk)
         {
+            outputChunk = StripControlOutput(outputChunk);
+
             if (_commandLineCharsInOutput > 0)
             {
                 if (_commandLineCharsInOutput >= outputChunk.Length)
@@ -159,6 +161,11 @@ namespace GitUI.UserControls
             }
 
             return outputChunk;
+        }
+
+        private string StripControlOutput(string outputChunk)
+        {
+            return Regex.Replace(outputChunk, @"\u001B.*\u0007", string.Empty);
         }
 
         public void AnsiStreamChunkReceived(object sender, AnsiStreamChunkEventArgs args)
